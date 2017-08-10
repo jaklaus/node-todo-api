@@ -8,15 +8,15 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', (err, db) => {
   }
   console.log('Connected to MongoDB server');
 
-  // db.collection('Todos').insertOne({
-  //   text: 'My first Todo',
-  //   completed: false
-  // }, (err, result) => {
-  //   if(err){
-  //     return console.log('Unable to add entry into to MongoDB', err)
-  //   }
-  //   console.log(JSON.stringify(result.ops, undefined, 2));
-  // })
+  db.collection('Todos').insertOne({
+    text: 'Get Groceries',
+    completed: false
+  }, (err, result) => {
+    if(err){
+      return console.log('Unable to add entry into to MongoDB', err)
+    }
+    console.log(JSON.stringify(result.ops, undefined, 2));
+  })
 
   // Insert new doc into Users collection (name, age, location)
 
