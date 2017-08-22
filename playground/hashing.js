@@ -1,8 +1,11 @@
-const {SHA256} = require('crypto-js');
+// const {SHA256} = require('crypto-js');
 const jwt = require('jsonwebtoken');
 
 var data = {
-  id: 10
+  id: 10,
+  name: 'joel',
+  email: 'joel@test.com',
+  password: 'testpassword'
 };
 
 var secret = 'allyse'
