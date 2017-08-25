@@ -240,3 +240,52 @@ describe('POST /users', () => {
       .end(done)
   });
 });
+
+describe('POST /users/login', () => {
+  it('should login the user', (done) => {
+    var testUser = {email: users[1].email, password: users[1].password };
+
+    request(app)
+      .post('/users/login')
+      .send(testUser)
+      .expect(200)
+      .expect((res) => {
+        expect(res.headers['x-auth']).toExist();
+      })
+      .end((err, res) => {
+        if(err){
+          return done(err);
+        }
+
+        User.findById(users[1]._id).then((user) => {
+          expect(user.tokens[0]).toInclude({
+            access: 'auth',
+            token: res.headers['x-auth']
+          });
+          done();
+        }).catch((e) => done(e))
+      })
+  });
+
+  it('should reject invalid username or password', (done) => {
+    var invalidUser = {email: users[1].email, password: 'error' };
+
+    request(app)
+      .post('/users/login')
+      .send(invalidUser)
+      .expect(400)
+      .expect((res) => {
+        expect(res.headers['x-auth']).toNotExist();
+      })
+      .end((err, res) => {
+        if(err){
+          return done(err);
+        }
+
+        User.findById(users[1]._id).then((user) => {
+          expect(user.tokens.length).toEqual(0);
+          done()
+        }).catch((e) => done(e))
+      })
+  })
+})
